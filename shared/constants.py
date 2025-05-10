@@ -30,3 +30,4 @@ class HTTPCodes:
 
 class GlobalConstants:
     log_file_path = "app.log"
+    jwt_algorithm = "HS256"

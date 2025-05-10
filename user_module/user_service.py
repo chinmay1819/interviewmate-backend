@@ -6,7 +6,7 @@ import jwt
 import pytz
 
 from user_module.exceptions import DatabaseError, ProvidedValueError
-from user_module.models import UserRegister,UserLogin
+from user_module.models import UserProfileDetails, UserRegister,UserLogin
 from shared.db_connection import db
 from pymongo.errors import PyMongoError
 
@@ -87,3 +87,36 @@ class UserService:
         except Exception as e:
             raise Exception("Unexpected error while logging in...")
         
+
+    
+
+    async def create_user_profile(self,user_profile_details:UserProfileDetails,user_email:str):
+        try:
+            profile_details = {
+                "role":user_profile_details.role,
+                "experience":{
+                    "years":user_profile_details.experience.years,
+                    "months":user_profile_details.experience.months
+                },
+                "tech_stack":user_profile_details.tech_stack,
+                "domain":user_profile_details.domain,
+                "previous_work_description":user_profile_details.previous_work_description,
+                "current_company":user_profile_details.current_company,
+                "linkedin_profile_link":str(user_profile_details.linkedin_profile_link)
+            }
+            self.user_collection.update_one(
+                {"email":user_email},
+                {"$set":{"profile_details":profile_details}}
+            )
+            
+            return True
+
+        except ValueError as ve:
+            logging.error(str(ve))
+            raise ProvidedValueError(str(ve))
+        except PyMongoError as db_err:
+            logging.error(str(db_err))
+            raise DatabaseError("Unable to interact with database at this moment")
+        except Exception as e:
+            logging.error(str(e))
+            raise Exception("Unexpected error while creating user profile")

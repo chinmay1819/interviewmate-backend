@@ -6,3 +6,7 @@ class CustomMessages:
     invalid_credentials = "Invalid Credentials"
 
     login_success = "Login success"
+    profile_created = "Profile Created succesfully"
+    profile_not_created = "Profile not created successfully"
+    invalid_token = "Invalid token"
+    add_bearer = "Please add Bearer before the token..."
