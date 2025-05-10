@@ -1,0 +1,6 @@
+python-dotenv
+fastapi
+fastapi[standard]
+uvicorn
+pyjwt
+pymongo==4.10.1
